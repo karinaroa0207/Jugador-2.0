@@ -21,13 +21,19 @@ public class JuegoController {
     public JuegoController(int n) {
         this.lista = new ListaCircular();
         this.dado = new Random();
-        this.vista = new JuegoView();
-        
-        for (int i = 1; i <= n; i++) {
-            lista.insertar(i);
-        }
+    }
+    
+    public JuegoController(int n, JuegoView vista) {
+    this.lista = new ListaCircular();
+    this.dado = new Random();
+    this.vista = vista;
+
+    for (int i = 1; i <= n; i++) {
+        lista.insertar(i);
     }
 
+    vista.iniciarVentana(n); // abre la ventana con los jugadores
+}
     /**
      * Ejecuta la lógica principal del juego, iterando hasta que solo quede un ganador.
      */
