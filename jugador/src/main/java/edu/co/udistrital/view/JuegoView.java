@@ -19,6 +19,7 @@ public class JuegoView {
     private JPanel panelJugadores;
     private JTextArea areaLog;
     private Map<Integer, JLabel> etiquetasJugadores; // id -> label en pantalla
+    private JScrollPane scrollJugadores;
 
     /**
      * Pregunta al usuario cuántos jugadores quiere al iniciar.
@@ -57,42 +58,85 @@ public class JuegoView {
      * @param numJugadores cantidad de jugadores para mostrar sus fichas.
      */
     public void iniciarVentana(int numJugadores) {
+
         etiquetasJugadores = new LinkedHashMap<>();
 
         frame = new JFrame("Juego de Eliminación");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(600, 500);
         frame.setLocationRelativeTo(null);
-        frame.setLayout(new BorderLayout(10, 10));
+        frame.setLayout(new BorderLayout());
+        //Panel con wrap(filas)
+        panelJugadores = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10)) {
+            // Crear filas manualmente para que el scrool vertical funcione
+            @Override
+            public Dimension getPreferredSize() {
 
-        // --- Panel superior: jugadores activos ---
-        panelJugadores = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
-        panelJugadores.setBorder(BorderFactory.createTitledBorder("Jugadores activos"));
-        panelJugadores.setBackground(new Color(230, 245, 255));
+                // Ancho disponible del contenedor padre (JScrollPane viewport)
+                // Se usa para calcular cuándo hacer salto de fila (wrap manual)
+                int width = getParent() != null ? getParent().getWidth() : 500;
+
+                int x = 0;
+                int y = 0;
+                int rowHeight = 0;
+
+                // Recorre todos los componentes (jugadores)
+                for (Component c : getComponents()) {
+
+                    // Tamaño preferido de cada componente
+                    Dimension d = c.getPreferredSize();
+
+                    // Si el siguiente componente no cabe en la fila actual,
+                    // se hace salto de línea (nueva fila)
+                    if (x + d.width > width) {
+                        x = 0;                 // reinicia posición horizontal
+                        y += rowHeight + 10;   // baja una fila completa (+ espacio)
+                        rowHeight = 0;         // reinicia altura de fila
+                    }
+
+                    // suma ancho del componente + separación horizontal                    
+                    x += d.width + 10;
+
+                    // Mantiene la mayor altura de la fila actual
+                    rowHeight = Math.max(rowHeight, d.height);
+                }
+
+                // Agrega la última fila al total de altura
+                // Para que ultimos elmentos no se corten agregamos 20 pixeles como padding
+                y += rowHeight + 20;
+
+                // Retorna el tamaño total calculado del panel
+                return new Dimension(width, y);
+            }
+        };
+        panelJugadores.setBackground(new Color(230, 245, 245));
 
         for (int i = 1; i <= numJugadores; i++) {
+
             JLabel lbl = new JLabel("J" + i, SwingConstants.CENTER);
-            lbl.setPreferredSize(new Dimension(50, 50));
+
+            lbl.setPreferredSize(new Dimension(70, 70));
             lbl.setOpaque(true);
             lbl.setBackground(new Color(70, 130, 180));
             lbl.setForeground(Color.WHITE);
-            lbl.setFont(new Font("Arial", Font.BOLD, 16));
             lbl.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
+
             panelJugadores.add(lbl);
             etiquetasJugadores.put(i, lbl);
         }
 
-        // --- Panel inferior: log de eventos ---
-        areaLog = new JTextArea();
-        areaLog.setEditable(false);
-        areaLog.setFont(new Font("Monospaced", Font.PLAIN, 13));
-        areaLog.setBackground(new Color(245, 245, 245));
-        JScrollPane scroll = new JScrollPane(areaLog);
-        scroll.setBorder(BorderFactory.createTitledBorder("Registro del juego"));
-        scroll.setPreferredSize(new Dimension(580, 280));
+        scrollJugadores = new JScrollPane(panelJugadores);
+        scrollJugadores.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollJugadores.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
-        frame.add(panelJugadores, BorderLayout.NORTH);
-        frame.add(scroll, BorderLayout.CENTER);
+        scrollJugadores.setPreferredSize(new Dimension(500, 180));
+
+        areaLog = new JTextArea();
+        JScrollPane scrollLog = new JScrollPane(areaLog);
+
+        frame.add(scrollJugadores, BorderLayout.NORTH);
+        frame.add(scrollLog, BorderLayout.CENTER);
+
         frame.setVisible(true);
     }
 
@@ -104,6 +148,7 @@ public class JuegoView {
      */
     public void mostrarJugadorLanza(int idJugador, int valorDado) {
         JLabel lbl = etiquetasJugadores.get(idJugador);
+        irAlJugador(lbl);
         if (lbl != null) {
             lbl.setBorder(BorderFactory.createLineBorder(Color.GREEN, 2));
         }
@@ -123,6 +168,7 @@ public class JuegoView {
      */
     public void mostrarEstadoJugador(int idJugador, boolean eliminado, int valorDado) {
         JLabel lbl = etiquetasJugadores.get(idJugador);
+        irAlJugador(lbl);
         if (eliminado) {
             agregarLog("   ❌ Jugador " + idJugador + " eliminado (impar).");
             if (lbl != null) {
@@ -170,5 +216,19 @@ public class JuegoView {
             Thread.sleep(ms);
         } catch (InterruptedException ignored) {
         }
+    }
+
+    /**
+     * Mover scroll view a jugador
+     *
+     * @param lbl jugador
+     */
+    private void irAlJugador(JLabel lbl) {
+        if (lbl == null) {
+            return;
+        }
+        SwingUtilities.invokeLater(() -> {
+            panelJugadores.scrollRectToVisible(lbl.getBounds());
+        });
     }
 }
