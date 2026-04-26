@@ -30,4 +30,14 @@ public class Nodo {
     public void setNext(Nodo next) {
         this.next = next;
     }
+    
+    /**
+     * Devuelve representacion en cadena de un Nodo
+     * 
+     * @return idJugador como cadena de texto
+     */
+    @Override
+    public String toString() {
+        return ""+idJugador;
+    }        
 }

@@ -37,44 +37,27 @@ public class JuegoController {
      */
     public void ejecutarJuego() {
         Nodo actual = lista.getHead();
-        Nodo anterior = obtenerAnterior(actual);
+        Nodo anterior = lista.obtenerAnterior(actual);
 
         while (lista.getSize() > 1) {
             int valorDado = dado.nextInt(6) + 1;
-
-            vista.mostrarJugadorLanza(actual.getIdJugador(), valorDado);
+            
+            vista.mostrarJugadorLanza(lista.getIdNodo(actual), valorDado);
 
             if (valorDado % 2 != 0) { // Regla: Impar = Elimina
-                vista.mostrarEstadoJugador(actual.getIdJugador(), true, valorDado);
+                vista.mostrarEstadoJugador(lista.getIdNodo(actual), true, valorDado);
 
                 // Mantenemos el nodo actual para avanzar después de eliminar
                 Nodo temp = actual;
-                actual = actual.getNext();
+                actual = lista.getNext(actual);
                 lista.eliminar(anterior);
 
             } else { // Regla: Par = Se salva
-                vista.mostrarEstadoJugador(actual.getIdJugador(), false, valorDado);
+                vista.mostrarEstadoJugador(lista.getIdNodo(actual), false, valorDado);
                 anterior = actual;
-                actual = actual.getNext();
-            }
+                actual = lista.getNext(actual);
+            }            
         }
-        vista.mostrarGanador(lista.getHead().getIdJugador());
+        vista.mostrarGanador(lista.getIdNodo(lista.getHead()));
     }
-
-    /**
-     * Método auxiliar para encontrar el nodo anterior a uno dado. Se hace
-     * porque la lista es simplemente enlazada.
-     *
-     * @param actual El nodo de referencia.
-     * @return El nodo que apunta a 'actual'.
-     */
-    private Nodo obtenerAnterior(Nodo actual) {
-        Nodo temp = actual;
-        // Recorremos hasta que el siguiente sea el actual
-        while (temp.getNext() != actual) {
-            temp = temp.getNext();
-        }
-        return temp;
-    }
-
 }

@@ -71,4 +71,59 @@ public class ListaCircular {
     public int getSize() {
         return size;
     }
+
+    /**
+     * Método para encontrar el nodo anterior a uno dado.
+     *
+     * @param actual El nodo de referencia.
+     * @return El nodo que apunta a 'actual'.
+     */
+    public Nodo obtenerAnterior(Nodo actual) {
+        Nodo temp = actual;
+        // Recorremos hasta que el siguiente sea el actual
+        while (temp.getNext() != actual) {
+            temp = temp.getNext();
+        }
+        return temp;
+    }
+
+    /**
+     * Método para obtener id de un nodo
+     *
+     * @param nodo Nodo del cual se quiere saber el id
+     * @return Numero entero que es el id del nodo
+     */
+    public int getIdNodo(Nodo nodo) {
+        return nodo.getIdJugador();
+    }
+
+    /**
+     * Obtener nodo siguiente a nodo de referencia
+     *
+     * @param nodo nodo de referencia
+     * @return nodo siguiente a nodo de referencia
+     */
+    public Nodo getNext(Nodo nodo) {
+        return nodo.getNext();
+    }
+    
+    /**
+     * Devuelve una representación en cadena de la lista circular
+     * 
+     * @return cadena de valores en orden desde la head a la tail
+     */
+    @Override
+    public String toString() {
+        if (head == null) {
+            return "No hay jugadores";
+        }
+        Nodo actual = head;
+        String rta = "";
+        do {
+            rta += actual + "-->";
+            actual = actual.getNext();
+        } while (actual != head);
+        rta += "...";
+        return rta;
+    }
 }
