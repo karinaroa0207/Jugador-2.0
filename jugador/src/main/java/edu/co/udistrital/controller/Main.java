@@ -10,7 +10,7 @@ public class Main {
      * @param args Argumentos de consola.
      */
     public static void main(String[] args) {
-        JuegoController juego = new JuegoController(5);
+        JuegoController juego = new JuegoController();
         juego.ejecutarJuego();
     }
 }
