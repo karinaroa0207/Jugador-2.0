@@ -17,24 +17,18 @@ public class JuegoController {
 
     /**
      * Constructor que inicializa los componentes del juego.
-     *
-     * @param n Número de jugadores iniciales.
      */
-    public JuegoController(int n) {
+    public JuegoController() {
+        this.vista = new JuegoView();
         this.lista = new ListaCircular();
         this.dado = new Random();
-    }
 
-    public JuegoController(int n, JuegoView vista) {
-        this.lista = new ListaCircular();
-        this.dado = new Random();
-        this.vista = vista;
-
+        int n = vista.pedirNumeroJugadores();
         for (int i = 1; i <= n; i++) {
             lista.insertar(i);
         }
-
         vista.iniciarVentana(n); // abre la ventana con los jugadores
+        ejecutarJuego();
     }
 
     /**

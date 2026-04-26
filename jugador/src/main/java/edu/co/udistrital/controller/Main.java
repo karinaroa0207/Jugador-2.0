@@ -13,9 +13,6 @@ public class Main {
      * @param args Argumentos de consola.
      */
     public static void main(String[] args) {
-        JuegoView vista = new JuegoView();
-        int numJugadores = vista.pedirNumeroJugadores();
-        JuegoController juego = new JuegoController(numJugadores, vista);
-        juego.ejecutarJuego();
+        new JuegoController();
     }
 }
