@@ -8,9 +8,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import javax.swing.JOptionPane;
-
 import javax.swing.JOptionPane;
 
 /**
@@ -106,8 +103,15 @@ public class JuegoView {
      * @param valorDado Valor obtenido.
      */
     public void mostrarJugadorLanza(int idJugador, int valorDado) {
+        JLabel lbl = etiquetasJugadores.get(idJugador);
+        if (lbl != null) {
+            lbl.setBorder(BorderFactory.createLineBorder(Color.GREEN, 2));
+        }
         agregarLog("🎲 Jugador " + idJugador + " lanzó: " + valorDado);
         pausar(400);
+        if (lbl != null) {
+            lbl.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
+        }
     }
 
     /**
@@ -118,18 +122,24 @@ public class JuegoView {
      * @param valorDado Valor del dado para el mensaje.
      */
     public void mostrarEstadoJugador(int idJugador, boolean eliminado, int valorDado) {
+        JLabel lbl = etiquetasJugadores.get(idJugador);
         if (eliminado) {
             agregarLog("   ❌ Jugador " + idJugador + " eliminado (impar).");
-            JLabel lbl = etiquetasJugadores.get(idJugador);
             if (lbl != null) {
+                lbl.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+                pausar(200);
                 panelJugadores.remove(lbl);
                 panelJugadores.revalidate();
                 panelJugadores.repaint();
             }
         } else {
             agregarLog("   ✅ Jugador " + idJugador + " se salva (par).");
+            if (lbl != null) {
+                lbl.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
+            }
         }
-        pausar(300);
+        pausar(100);
+
     }
 
     /**
@@ -147,7 +157,7 @@ public class JuegoView {
         );
     }
 
-    // --- Métodos internos ---
+    // --- Métodos internos ---    
     private void agregarLog(String mensaje) {
         SwingUtilities.invokeLater(() -> {
             areaLog.append(mensaje + "\n");
