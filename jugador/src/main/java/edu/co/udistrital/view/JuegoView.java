@@ -1,10 +1,9 @@
 package edu.co.udistrital.view;
 
 /**
- * Clase encargada exclusivamente de mostrar la información al usuario en consola.
- * No contiene lógica de negocio, solo métodos de presentación.
+ * Clase encargada exclusivamente de mostrar la información al usuario en
+ * consola. No contiene lógica de negocio, solo métodos de presentación.
  */
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.LinkedHashMap;
@@ -26,23 +25,28 @@ public class JuegoView {
 
     /**
      * Pregunta al usuario cuántos jugadores quiere al iniciar.
+     *
      * @return número de jugadores ingresado.
      */
     public int pedirNumeroJugadores() {
         while (true) {
             String input = JOptionPane.showInputDialog(
-                null,
-                "¿Cuántos jugadores participan?",
-                "Configuración del Juego",
-                JOptionPane.QUESTION_MESSAGE
+                    null,
+                    "¿Cuántos jugadores participan?",
+                    "Configuración del Juego",
+                    JOptionPane.QUESTION_MESSAGE
             );
 
             // Si cierra el diálogo, termina el programa
-            if (input == null) System.exit(0);
+            if (input == null) {
+                System.exit(0);
+            }
 
             try {
                 int n = Integer.parseInt(input.trim());
-                if (n >= 2) return n;
+                if (n >= 2) {
+                    return n;
+                }
                 JOptionPane.showMessageDialog(null, "Ingresa al menos 2 jugadores.", "Error", JOptionPane.ERROR_MESSAGE);
             } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(null, "Ingresa un número válido.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -52,6 +56,7 @@ public class JuegoView {
 
     /**
      * Construye y muestra la ventana principal del juego.
+     *
      * @param numJugadores cantidad de jugadores para mostrar sus fichas.
      */
     public void iniciarVentana(int numJugadores) {
@@ -96,6 +101,7 @@ public class JuegoView {
 
     /**
      * Muestra en el log que un jugador lanzó el dado.
+     *
      * @param idJugador ID del jugador.
      * @param valorDado Valor obtenido.
      */
@@ -106,6 +112,7 @@ public class JuegoView {
 
     /**
      * Actualiza la interfaz según si el jugador fue eliminado o se salvó.
+     *
      * @param idJugador ID del jugador.
      * @param eliminado true si fue eliminado, false si se salvó.
      * @param valorDado Valor del dado para el mensaje.
@@ -127,20 +134,20 @@ public class JuegoView {
 
     /**
      * Muestra el ganador al terminar el juego.
+     *
      * @param idGanador ID del jugador ganador.
      */
     public void mostrarGanador(int idGanador) {
         agregarLog("\n🏆 ¡Jugador " + idGanador + " es el GANADOR!");
         JOptionPane.showMessageDialog(
-            frame,
-            "🏆 ¡El ganador es el Jugador " + idGanador + "!",
-            "Fin del juego",
-            JOptionPane.INFORMATION_MESSAGE
+                frame,
+                "🏆 ¡El ganador es el Jugador " + idGanador + "!",
+                "Fin del juego",
+                JOptionPane.INFORMATION_MESSAGE
         );
     }
 
     // --- Métodos internos ---
-
     private void agregarLog(String mensaje) {
         SwingUtilities.invokeLater(() -> {
             areaLog.append(mensaje + "\n");
@@ -149,6 +156,9 @@ public class JuegoView {
     }
 
     private void pausar(int ms) {
-        try { Thread.sleep(ms); } catch (InterruptedException ignored) {}
+        try {
+            Thread.sleep(ms);
+        } catch (InterruptedException ignored) {
+        }
     }
 }
