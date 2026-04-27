@@ -1,7 +1,5 @@
 package edu.co.udistrital.controller;
 
-import edu.co.udistrital.view.JuegoView;
-
 /**
  * Clase principal que lanza la aplicación.
  */
