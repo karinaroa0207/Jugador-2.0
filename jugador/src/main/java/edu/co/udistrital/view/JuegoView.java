@@ -85,6 +85,11 @@ public class JuegoView {
         areaLog.setForeground(new Color(0, 255, 200)); // Letra color cyan/neón
         areaLog.setFont(new Font("Monospaced", Font.BOLD, 13));
         areaLog.setMargin(new Insets(10, 10, 10, 10));
+        //Hacer que el texto no se salga horizontalmente y cree un scrool horizontal
+        //Mostrar texto en la siguiente linea
+        areaLog.setLineWrap(true);
+        //Evita cortar palabras a la mitad
+        areaLog.setWrapStyleWord(true);
 
         JScrollPane scrollLog = new JScrollPane(areaLog);
         scrollLog.setPreferredSize(new Dimension(300, 0)); // Ancho fijo a la izquierda
