@@ -267,7 +267,7 @@ public class JuegoView {
         }
         if (numJugadores > 10) {
             frame.setSize(850, 500); // Ventana más ancha para formato Izquierda/Derecha
-            frame.add(panelLog, BorderLayout.WEST); // Izquierda
+            frame.add(scrollLog, BorderLayout.WEST); // Izquierda
             frame.add(scrollJugadores, BorderLayout.CENTER); // Derecha
         } else {
             frame.setSize(600, 600); // Ventana más ancha para formato circulo  
