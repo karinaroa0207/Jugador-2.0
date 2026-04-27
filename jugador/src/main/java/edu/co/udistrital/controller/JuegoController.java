@@ -13,51 +13,56 @@ public class JuegoController {
 
     private ListaCircular lista;
     private Random dado;
-    private JuegoView vista;
+    private ControlVista CVista;
 
     /**
      * Constructor que inicializa los componentes del juego.
      */
     public JuegoController() {
-        this.vista = new JuegoView();
+        this.CVista = new ControlVista(this);
         this.lista = new ListaCircular();
         this.dado = new Random();
-
-        int n = vista.pedirNumeroJugadores();
-        for (int i = 1; i <= n; i++) {
-            lista.insertar(i);
-        }
-        vista.iniciarVentana(n); // abre la ventana con los jugadores
-        ejecutarJuego();
+        CVista.pedirNumeroJugadores();
     }
 
     /**
      * Ejecuta la lógica principal del juego, iterando hasta que solo quede un
      * ganador.
+     *
+     * @param n numero de jugadores
      */
-    public void ejecutarJuego() {
+    public void ejecutarJuego(int n) {
+        for (int i = 1; i <= n; i++) {
+            lista.insertar(i);
+        }
+
         Nodo actual = lista.getHead();
         //Obtenemos nodo anterior para eliminar más facil actual
         Nodo anterior = lista.obtenerAnterior(actual);
 
         while (lista.getSize() > 1) {
             int valorDado = dado.nextInt(6) + 1;
-            
-            vista.mostrarJugadorLanza(lista.getIdNodo(actual), valorDado);
+
+            CVista.mostrarLanzamiento(lista.getIdNodo(actual), valorDado);
 
             if (valorDado % 2 != 0) { // Regla: Impar = Elimina
-                vista.mostrarEstadoJugador(lista.getIdNodo(actual), true, valorDado);
+                CVista.mostrarEstadoJugador(lista.getIdNodo(actual), true, valorDado);
 
                 // Mantenemos el nodo actual para avanzar después de eliminar
                 actual = lista.getNext(actual);
                 lista.eliminarSiguiente(anterior);
 
             } else { // Regla: Par = Se salva
-                vista.mostrarEstadoJugador(lista.getIdNodo(actual), false, valorDado);
+                CVista.mostrarEstadoJugador(lista.getIdNodo(actual), false, valorDado);
                 anterior = actual;
                 actual = lista.getNext(actual);
-            }            
+            }
         }
-        vista.mostrarGanador(lista.getIdNodo(lista.getHead()));
+        CVista.mostrarGanador(lista.getIdNodo(lista.getHead()));
+    }
+    
+    public void reiniciar() {        
+        lista.eliminarSiguiente(lista.getHead());
+        CVista.pedirNumeroJugadores();
     }
 }
