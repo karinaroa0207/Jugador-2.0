@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"edu.co.udistrital.controller","l":"JuegoController"},{"p":"edu.co.udistrital.view","l":"JuegoView"},{"p":"edu.co.udistrital.model","l":"ListaCircular"},{"p":"edu.co.udistrital.controller","l":"Main"},{"p":"edu.co.udistrital.model","l":"Nodo"}];updateSearchResults();
