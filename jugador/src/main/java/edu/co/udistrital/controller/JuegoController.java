@@ -37,6 +37,7 @@ public class JuegoController {
      */
     public void ejecutarJuego() {
         Nodo actual = lista.getHead();
+        //Obtenemos nodo anterior para eliminar más facil actual
         Nodo anterior = lista.obtenerAnterior(actual);
 
         while (lista.getSize() > 1) {
@@ -48,9 +49,8 @@ public class JuegoController {
                 vista.mostrarEstadoJugador(lista.getIdNodo(actual), true, valorDado);
 
                 // Mantenemos el nodo actual para avanzar después de eliminar
-                Nodo temp = actual;
                 actual = lista.getNext(actual);
-                lista.eliminar(anterior);
+                lista.eliminarSiguiente(anterior);
 
             } else { // Regla: Par = Se salva
                 vista.mostrarEstadoJugador(lista.getIdNodo(actual), false, valorDado);

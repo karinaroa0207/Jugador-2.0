@@ -40,7 +40,7 @@ public class ListaCircular {
      *
      * @param anterior El nodo previo al que se desea eliminar.
      */
-    public void eliminar(Nodo anterior) {
+    public void eliminarSiguiente(Nodo anterior) {
         if (size == 0) {
             return;
         }
